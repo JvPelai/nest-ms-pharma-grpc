@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { GrpcMethod, Payload } from '@nestjs/microservices';
 import { PharmaciesService } from './pharmacies.service';
 import { CreatePharmacyDto } from './dto/create-pharmacy.dto';
 import { UpdatePharmacyDto } from './dto/update-pharmacy.dto';
@@ -8,22 +8,22 @@ import { UpdatePharmacyDto } from './dto/update-pharmacy.dto';
 export class PharmaciesController {
   constructor(private readonly pharmaciesService: PharmaciesService) {}
 
-  @MessagePattern('createPharmacy')
+  @GrpcMethod('createPharmacy')
   create(@Payload() createPharmacyDto: CreatePharmacyDto) {
     return this.pharmaciesService.create(createPharmacyDto);
   }
 
-  @MessagePattern('findAllPharmacies')
+  @GrpcMethod('findAllPharmacies')
   findAll() {
     return this.pharmaciesService.findAll();
   }
 
-  @MessagePattern('findOnePharmacy')
+  @GrpcMethod('findOnePharmacy')
   findOne(@Payload() id: number) {
     return this.pharmaciesService.findOne(id);
   }
 
-  @MessagePattern('updatePharmacy')
+  @GrpcMethod('updatePharmacy')
   update(@Payload() updatePharmacyDto: UpdatePharmacyDto) {
     return this.pharmaciesService.update(
       updatePharmacyDto.id,
@@ -31,7 +31,7 @@ export class PharmaciesController {
     );
   }
 
-  @MessagePattern('removePharmacy')
+  @GrpcMethod('removePharmacy')
   remove(@Payload() id: number) {
     return this.pharmaciesService.remove(id);
   }

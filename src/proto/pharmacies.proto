@@ -1,0 +1,9 @@
+syntax = "proto3";
+package pharmacy;
+message Void {}
+
+service PharmacyService {
+  rpc List (Void) returns (Void);
+  rpc Find (Void) returns (Void);
+}
+
