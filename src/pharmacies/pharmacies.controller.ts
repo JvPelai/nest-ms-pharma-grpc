@@ -1,4 +1,5 @@
 import { Controller } from '@nestjs/common';
+import { Pharmacy } from './entities/pharmacy.entity';
 import { GrpcMethod, Payload } from '@nestjs/microservices';
 import { PharmaciesService } from './pharmacies.service';
 import { CreatePharmacyDto } from './dto/create-pharmacy.dto';
@@ -8,14 +9,16 @@ import { UpdatePharmacyDto } from './dto/update-pharmacy.dto';
 export class PharmaciesController {
   constructor(private readonly pharmaciesService: PharmaciesService) {}
 
-  @GrpcMethod('createPharmacy')
-  create(@Payload() createPharmacyDto: CreatePharmacyDto) {
-    return this.pharmaciesService.create(createPharmacyDto);
+  @GrpcMethod('PharmaciesService', 'Create')
+  async create(body: CreatePharmacyDto): Promise<{ response: Pharmacy }> {
+    const response = await this.pharmaciesService.create(body);
+    return { response };
   }
 
-  @GrpcMethod('findAllPharmacies')
-  findAll() {
-    return this.pharmaciesService.findAll();
+  @GrpcMethod('PharmaciesService', 'List')
+  async list(): Promise<{ pharmacies: Pharmacy[] }> {
+    const pharmacies = await this.pharmaciesService.list();
+    return { pharmacies };
   }
 
   @GrpcMethod('findOnePharmacy')

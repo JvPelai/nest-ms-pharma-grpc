@@ -1,9 +1,36 @@
 syntax = "proto3";
 package pharmacy;
+
 message Void {}
 
-service PharmacyService {
-  rpc List (Void) returns (Void);
-  rpc Find (Void) returns (Void);
+service PharmaciesService {
+  rpc Create (Pharmacy) returns (PharmacyCreateResponse);
+  rpc List (Void) returns (PharmacyListResponse);
+  rpc Find (PharmacyFindRequest) returns (PharmacyFindResponse);
 }
 
+message Pharmacy {
+  optional int32 id = 1;
+  string logo = 2;
+  string name = 3;
+  string cnpj = 4;
+  string adress = 5;
+  string supervisor = 6;
+  string phoneNumber = 7;
+}
+
+message PharmacyFindRequest {
+  int32 id = 1;
+}
+
+message PharmacyFindResponse {
+  Pharmacy pharmacy = 1;
+}
+
+message PharmacyListResponse {
+  repeated Pharmacy pharmacies = 1;
+}
+
+message PharmacyCreateResponse {
+  Pharmacy response = 1;
+}

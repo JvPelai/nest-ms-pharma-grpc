@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { getManager } from 'typeorm';
+import { Pharmacy } from './entities/pharmacy.entity';
 import { CreatePharmacyDto } from './dto/create-pharmacy.dto';
 import { UpdatePharmacyDto } from './dto/update-pharmacy.dto';
 
 @Injectable()
 export class PharmaciesService {
-  create(createPharmacyDto: CreatePharmacyDto) {
-    return 'This action adds a new pharmacy';
+  async create(createPharmacyDto: CreatePharmacyDto) {
+    const manager = getManager();
+    const newPharmacy = manager.create(Pharmacy, createPharmacyDto);
+    const result = await manager.save(newPharmacy);
+    return result;
   }
 
-  findAll() {
-    return `This action returns all pharmacies`;
+  async list() {
+    const manager = getManager();
+    const pharmacies = await manager.find(Pharmacy);
+    return pharmacies;
   }
 
   findOne(id: number) {
